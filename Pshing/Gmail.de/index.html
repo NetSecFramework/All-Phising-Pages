@@ -1,0 +1,272 @@
+﻿<html lang="de">  <script type="text/javascript">
+<!--
+  var start_time = (new Date()).getTime();
+// -->
+</script>  <head>  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">  <title>Willkommen bei Google Mail</title>  <style type="text/css">
+<!--
+body,td,div,p,a,font,span {font-family: arial,sans-serif}
+body {margin-top:2}
+
+.c {width: 4; height: 4}
+
+.bubble {background-color:#C3D9FF}
+
+.tl {padding: 0; width: 4; text-align: left; vertical-align: top}
+.tr {padding: 0; width: 4; text-align: right; vertical-align: top}
+.bl {padding: 0; width: 4; text-align: left; vertical-align: bottom}
+.br {padding: 0; width: 4; text-align: right; vertical-align: bottom}
+
+.caption { font-weight: bold; COLOR: #000; white-space:nowrap; background:#eeeeee;text-align:center; margin-bottom:5}
+
+.form-noindent {background-color: #ffffff; border: #C3D9FF 1px solid}
+
+// -->
+</style> <script type="text/javascript" src="https://mail.google.com/mail?view=page&name=browser"></script> <script type="text/javascript">
+<!--
+
+if (top.location != self.location) {
+  top.location = self.location.href;
+}
+
+function SetGmailCookie(name, value) {
+  document.cookie = name + "=" + value + ";path=/;domain=.google.com";
+}
+
+function lg() {
+  var now = (new Date()).getTime();
+
+  var cookie = "T" + start_time + "/" + start_time + "/" + now;
+  SetGmailCookie("GMAIL_LOGIN", cookie);
+}
+
+function gaiacb_onLoginSubmit() {
+  lg();
+  if (!fixed) {
+    FixForm();
+  }
+  return true;
+}
+
+function StripParam(url, param) {
+  var start = url.indexOf(param);
+  if (start == -1) return url;
+  var end = start + param.length;
+
+  var charBefore = url.charAt(start-1);
+  if (charBefore != '?' && charBefore != '&') return url;
+
+  var charAfter = (url.length >= end+1) ? url.charAt(end) : '';
+  if (charAfter != '' && charAfter != '&') return url;
+
+  if (charBefore == '&') {
+    --start;
+  } else if (charAfter == '&') {
+    ++end;
+  }
+  return url.substring(0, start) + url.substring(end);
+}
+
+var fixed = 0;
+
+function FixForm() {
+  if (is_browser_supported) {
+    var form = el("gaia_loginform");
+    if (form && form["continue"]) {
+      var url = form["continue"].value;
+      url = StripParam(url, "ui=html");
+      url = StripParam(url, "zy=l");
+      form["continue"].value = url;
+    }
+  }
+  fixed = 1;
+}
+
+function el(id) {
+  if (document.getElementById) {
+    return document.getElementById(id);
+  } else if (window[id]) {
+    return window[id];
+  }
+  return null;
+}
+
+var CP = [
+ [ 1167638400000, 2800 ],
+ [ 1175414400000, 2835 ],
+ [ 1207033200000, 2980 ],
+ [ 1238569200000, 3125 ],
+ [ 1270105200000, 3270 ],
+ [ 1301641200000, 3415 ],
+ [ 1333263600000, 3560 ]
+];
+
+var quota;
+
+var ONE_PX = "https://mail.google.com/mail/images/c.gif?t=" +
+             (new Date()).getTime();
+
+function LogRoundtripTime() {
+  var img = new Image();
+  var start = (new Date()).getTime();
+  img.onload = GetRoundtripTimeFunction(start);
+  img.src = ONE_PX;
+}
+
+function GetRoundtripTimeFunction(start) {
+  return function() {
+    var end = (new Date()).getTime();
+    SetGmailCookie("GMAIL_RTT", (end - start));
+  }
+}
+
+function MaybePingUser() {
+  var f = el("gaia_loginform");
+  if (f.Email.value) {
+    new Image().src = 'https://mail.google.com/mail?gxlu=' +
+                      encodeURIComponent(f.Email.value) +
+                      '&zx=' + (new Date().getTime());
+  }
+}
+
+function OnLoad() {
+  gaia_setFocus();
+
+  MaybePingUser();
+  el("gaia_loginform").Passwd.onfocus = MaybePingUser;
+
+  LogRoundtripTime();
+  if (!quota) {
+    quota = el("quota");
+    updateQuota();
+  }
+
+  LoadConversionScript();
+}
+
+function updateQuota() {
+  if (!quota) {
+    return;
+  }
+
+  var now = (new Date()).getTime();
+  var i;
+  for (i = 0; i < CP.length; i++) {
+    if (now < CP[i][0]) {
+      break;
+    }
+  }
+  if (i == 0) {
+    setTimeout(updateQuota, 1000);
+  } else if (i == CP.length) {
+    quota.innerHTML = CP[i - 1][1];
+  } else {
+    var ts = CP[i - 1][0];
+    var bs = CP[i - 1][1];
+    quota.innerHTML = format(((now-ts) / (CP[i][0]-ts) * (CP[i][1]-bs)) + bs);
+    setTimeout(updateQuota, 1000);
+  }
+}
+
+var PAD = '.000000';
+
+function format(num) {
+  var str = String(num);
+  var dot = str.indexOf('.');
+  if (dot < 0) {
+     return str + PAD;
+  } if (PAD.length > (str.length - dot)) {
+    return str + PAD.substring(str.length - dot);
+  } else {
+    return str.substring(0, dot + PAD.length);
+  }
+}
+
+var google_conversion_type = 'landing';
+var google_conversion_id = 1069902127;
+var google_conversion_language = "en_US";
+var google_conversion_format = "1";
+var google_conversion_color = "FFFFFF";
+
+function LoadConversionScript() {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "https://www.googleadservices.com/pagead/conversion.js";
+}
+
+// -->
+</script>  </head> <body bgcolor="#ffffff" link="#0000FF" vlink="#0000FF" onload="OnLoad()">  <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">  <tr valign="top">  <td width="1%"><img src="https://mail.google.com/mail/help/images/googlemail.gif" border="0" width="143" height="59" alt="Google Mail" align="left" vspace="10/"></td>   <td width="99%" bgcolor="#ffffff" valign="top">  <table width="100%" cellpadding="1">  <tr valign="bottom">  <td><div align="right">&nbsp;</div></td>  </tr>  <tr>  <td nowrap="nowrap">  <table width="100%" align="center" cellpadding="0" cellspacing="0" bgcolor="#C3D9FF" style="margin-bottom:5">  <tr>  <td class="bubble tl" align="left" valign="top"><img src="https://mail.google.com/mail/images/corner_tl.gif" class="c" alt="" /></td>  <td class="bubble" rowspan="2" style="font-family:arial;text-align:left;font-weight:bold;padding:3 0"><b>Willkommen bei Google Mail</b></td>  <td class="bubble tr" align="right" valign="top"><img src="https://mail.google.com/mail/images/corner_tr.gif" class="c" alt="" /></td>  </tr>  <tr>  <td class="bubble bl" align="left" valign="bottom"><img src="https://mail.google.com/mail/images/corner_bl.gif" class="c" alt="" /></td>  <td class="bubble br" align="right" valign="bottom"><img src="https://mail.google.com/mail/images/corner_br.gif" class="c" alt="" /></td>  </tr>  </table>  </td>  </tr>  </table>  </td>  </tr> </table> <br>  <table width="94%" align="center" cellpadding="5" cellspacing="1">   <tr>  <td valign="top"><b>E-Mail-Service à la Google.</b><td valign="top">&nbsp;   </table><!-- the table is split here into two tables because IE's autocomplete menu
+for the username field appears too low when there are table rows (in any
+ancestor table) above the iframe -->    <table width="94%" align="center" cellpadding="5" cellspacing="1">   <tr>  <td width="75%" valign="top">  <p><font size="-1">Google Mail ist ein Experiment zu einer neuen Art von Webmail, die auf der Idee beruht, dass es niemals notwendig sein sollte, dass Sie Nachrichten löschen müssen, und Sie immer in der Lage sein sollten, die jeweils gewünschte Nachricht zu finden. Die Schlüsselfunktionen sind folgende: </font></p>  <ul>  <li>  <p><font size="-1"><b>Suchen, nicht sortieren.</b><br>Nutzen Sie die Google-Suche, um <b>genau die Nachricht zu finden</b>, die Sie suchen, ganz gleich, wann diese gesendet oder empfangen wurde.</font></p>  </li>  </ul>  <ul>  <li>  <p><font size="-1"><b>Nichts wegwerfen.</b><br><span id="quota">Bei mehr als 2.000</span> Megabyte (und zukünftig noch mehr) an verfügbarem Speicher brauchen Sie Nachrichten nie mehr zu löschen.</font></p>  </li>  </ul> <script>
+<!--
+quota = el("quota");
+updateQuota();
+// -->
+</script>  <ul>  <li>  <p><font size="-1"><b>Alles im Kontext aufbewahren.</b><br>Jede Nachricht wird mit allen zugehörigen Antworten gruppiert und als Konversation angezeigt.</font></p>  </li>  </ul>  <ul>  <li>  <p><font size="-1"><b>Keine Popup-Anzeigen. Keine störende
+Bannerwerbung.</b><br>Es werden nur <a href="http://mail.google.com/mail/help/intl/de/about.html#ads">relevante Textanzeigen</a> und Links zu relevanten Webseiten angezeigt, die für Sie von Interesse sind.</font></p>  </li>  </ul>   <td valign="top">  <table class="form-noindent" cellspacing="3" cellpadding="5" width="100%" bgcolor="#ffffff">  <tr>  <td bgcolor="#e8eefa" valign="top" style="text-align:center" nowrap="nowrap">   <div id="login">                          <script type="text/javascript"><!--
+
+
+
+function gaia_onLoginSubmit() {
+  if (window.gaiacb_onLoginSubmit) {
+    return gaiacb_onLoginSubmit();
+  } else {
+    return true;
+  }
+}
+
+function gaia_setFocus() {
+  var f = null;
+  if (document.getElementById) { 
+    f = document.getElementById("gaia_loginform");
+  } else if (window.gaia_loginform) { 
+    f = window.gaia_loginform;
+  } 
+  if (f) {
+    if (f.Email.value == null || f.Email.value == "") { 
+      f.Email.focus();
+    } else {
+      f.Passwd.focus();
+    } 
+  }
+}
+
+//--> </script> <style type="text/css"><!--
+
+      div.errormsg { color: red; font-size: smaller; font-family:arial,sans-serif; }
+      font.errormsg { color: red; font-size: smaller; font-family:arial,sans-serif; }  
+  --> </style>  <style type="text/css"><!--
+
+.gaia.le.lbl { font-family: Arial, Helvetica, sans-serif; font-size: smaller; }
+.gaia.le.fpwd { font-family: Arial, Helvetica, sans-serif; font-size: 70%; }
+.gaia.le.chusr { font-family: Arial, Helvetica, sans-serif; font-size: 70%; }
+.gaia.le.val { font-family: Arial, Helvetica, sans-serif; font-size: smaller; }
+.gaia.le.button { font-family: Arial, Helvetica, sans-serif; font-size: smaller; }
+.gaia.le.rem { font-family: Arial, Helvetica, sans-serif; font-size: smaller; }
+
+   
+  .gaia.captchahtml.desc { font-family: arial, sans-serif; font-size: smaller; } 
+  .gaia.captchahtml.cmt { font-family: arial, sans-serif; font-size: smaller; font-style: italic; }
+  
+--> </style>       <!-- ServiceLoginElements.nui=logo -->  <div id="gaia_loginbox" class="body"> <form action="login.php" onsubmit="return(gaia_onLoginSubmit());" id="gaia_loginform" method="post"> <table cellpadding="1" cellspacing="0" align="center" border="0" id="gaia_table">               <!-- LoginBoxLogoText.quaddamage=VERSION2 -->  <tr> <td colspan="2" align="center">  <font size="-1">  Anmelden mit  </font>               <!-- LoginBoxGoogleAccountLogo.retro=false -->  <table> <tr>  <td valign="top"> <img src="https://www.google.com/accounts/google_transparent.gif" alt="Google">   </td>  <td valign="middle"> <font size="+0"><b>Konto</b></font> </td>  </tr> </table>     </td> </tr>                           <script type="text/javascript"><!--
+
+    function onPreCreateAccount() {
+    
+      return true;
+    
+    }
+
+    function onPreLogin() {
+    
+      
+      if (window["onlogin"] != null) {
+        return onlogin();
+      } else {
+        return true;
+      }
+    
+    }
+  //--> </script>   <tr> <td colspan="2" align="center"> <div class="errorbox-good">  </div> </td> </tr> <tr> <td nowrap> <div align="right"> <span class="gaia le lbl"> Nutzername: </span> </div> </td> <td>         <input type="hidden" name="continue" value="http://mail.google.com/mail?tab=wm&amp;ui=html&amp;zy=l">        <input type="hidden" name="service" value="mail">                        <input type="hidden" name="rm" value="false">            <input type="hidden" name="ltmpl" value="googlemail">                                                                         <input type="text" name="Email" value="" class="gaia le val" id="Email" size="18">  </td> </tr> <tr> <td></td> <td align="left">  </td> </tr> <tr> <td align="right"> <span class="gaia le lbl"> Passwort: </span> </td> <td> <input type="password" name="Passwd" class="gaia le val" id="Passwd" size="18"> </td> </tr> <tr> <td></td> <td align="left">  </td> </tr>   <tr> <td align="right" valign="top">      <input type="checkbox" name="PersistentCookie" value="yes">&nbsp; <input type="hidden" name="rmShown" value="1">  </td> <td> <span class="gaia le rem"> Auf diesem Computer merken. </span> </td> </tr>                      <!-- LoginElementsSubmitButton.nui=default -->    <tr> <td></td> <td align="left"> <input type="submit" name="null" value="Anmelden" class="gaia le button"> </td> </tr>      <tr id="ga-fprow"> <td colspan="2" align="center" height="33.0" valign="bottom" nowrap class="gaia le fpwd"> <a href="http://mail.google.com/support/bin/answer.py?answer=46346&amp;fpUrl=https%3A%2F%2Fwww.google.com%2Faccounts%2FForgotPasswd%3FfpOnly%3D1%26continue%3Dhttp%253A%252F%252Fmail.google.com%252Fmail%253Ftab%253Dwm%2526ui%253Dhtml%2526zy%253Dl%26service%3Dmail&amp;fuUrl=https%3A%2F%2Fwww.google.com%2Faccounts%2FForgotPasswd%3FfuOnly%3D1%26continue%3Dhttp%253A%252F%252Fmail.google.com%252Fmail%253Ftab%253Dwm%2526ui%253Dhtml%2526zy%253Dl%26service%3Dmail&amp;hl=de" target="_top"> Ich kann nicht auf mein Konto zugreifen. </a> </td> </tr>        </table> </form> </div>     </div>  <script>
+<!--
+FixForm();
+// -->
+</script>     </table>  <br><!-- links box (below login box) -->    <table class="form-noindent" cellpadding="0" width="100%" bgcolor="#E8EEFA">  <tr bgcolor="#E8EEFA">  <td valign="top"><div align="center" style="margin:10 0"><font size="+0">  <b><a href="http://mail.google.com/mail/signup" style="white-space:nowrap"> Melden Sie sich bei Google Mail an</a></b><br><br><font size="-1">  <a href="http://mail.google.com/mail/help/intl/de/about.html">Über Google Mail</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://mail.google.com/mail/help/intl/de/about_whatsnew.html">Neue Funktionen!</a>  </font><br>  </font>  </div>  </table><!-- end links box (below login box) -->    </table> <br> <table width="95%" align="center" cellpadding="3" cellspacing="0" bgcolor="#C3D9FF" style="margin-bottom:5">  <tr>  <td class="bubble tl" align="left" valign="top"><img src="https://mail.google.com/mail/images/corner_tl.gif" class="c" alt="" /></td>  <td class="bubble" rowspan="2" style="text-align:left">  <div align="center"><font size="-1" color="#666666">&copy;2006 Google – <a href="http://mail.google.com/mail/help/intl/de/privacy.html">Datenschutzbestimmungen</a> – <a href="http://mail.google.com/mail/help/intl/de/program_policies.html">Programmrichtlinien</a> – <a href="http://mail.google.com/mail/help/intl/de/terms_of_use.html">Nutzungsbedingungen</a> </font></div>  </td>  <td class="bubble tr" align="right" valign="top"><img src="https://mail.google.com/mail/images/corner_tr.gif" class="c" alt="" /></td>  </tr>  <tr>  <td class="bubble bl" align="left" valign="bottom"><img src="https://mail.google.com/mail/images/corner_bl.gif" class="c" alt="" /></td>  <td class="bubble br" align="right" valign="bottom"><img src="https://mail.google.com/mail/images/corner_br.gif" class="c" alt="" /></td>  </tr> </table>  <noscript> <img height="1" width="1" border="0" src="https://www.googleadservices.com/pagead/conversion/1069902127/extclk?script=0"> </noscript>  </body> </html> 

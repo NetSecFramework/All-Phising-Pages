@@ -1,0 +1,36 @@
+1 First Goto This url http://freehostia.com/signup.html
+ 
+  And Register for a free account their.In The Domain Name Select Use a subdomain.
+
+2 Login To Your Cpanel And select Site Management ---PIC 1
+
+3 Now Select File Manage ----PIC 2
+
+4 Now Click Your Domain Name---PIC 3 (Wait For some minutes If the Url is Not listed)
+
+5 Select browse And Uplaod all The Files---PIC 4
+
+6 I Have taken Example Of Orkut Fake Login Page
+
+	
+	get The Url Of the .html Page
+
+  like This (Your Domain name).freehostia.com/orkut.html  -----PIC 5
+
+7 A new .TXT file will appear in the Directory were u have Uploaded all the files Cointaing 
+The login imformation ----PIC 6
+
+
+7 Now Check the Box near Logins and select permission 700 and click change ----PIC 7
+
+
+			Thats All Happy Hacking
+
+
+						
+
+
+
+
+
+
